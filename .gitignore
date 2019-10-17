@@ -1,2 +1,6 @@
 __pycache__
 *.pyc
+output/cfg_test.txt
+output/test.vul
+output/vulcan_EQ.txt
+plot/mix.png
