@@ -117,24 +117,34 @@ class InitialAbun(object):
     
     def out_EQ(self, y_ini, data_atm):
         
-        output = open(vulcan_cfg.EQ_outfile, "w")
         #out_species = ['CH4', 'CO', 'CO2', 'C2H2', 'H2', 'H', 'H2O', 'HCN', 'He', 'NH3', 'O2', 'NO', 'OH']
 
-        ost = '{:<8s}'.format('(bar) ')  + '{:>9s}'.format('(K)') + '{:>9s}'.format('(cm)') + '\n'
-        ost += '{:<8s}'.format('Pressure')  + '{:>9s}'.format('Temp')+ '{:>9s}'.format('Height')
-        for sp in species: ost += '{:>10s}'.format(sp) 
+        ost = '{:<8s}'.format('(bar) ')  + '{:>9s}'.format('(K)') + '{:>9s}'.format('(cm)') + '{:>9s}'.format(' (mean molecular mass)')+'\n'
+        ost += '{:<8s}'.format('Pressure')  + '{:>9s}'.format('Temp')+ '{:>9s}'.format('Height') + '{:>9s}'.format('mu')
+    
+        for sp in species: ost += '{:>10s}'.format(sp)       
         ost +='\n'
- 
+
+        ost2 = ost # string is immutible
+        
         for n, p in enumerate(data_atm.pco):
-            ost += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n])
+            ost += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n]) + '{:>10.4f}'.format(data_atm.mu[n])
+            ost2 += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n])+ '{:>10.4f}'.format(data_atm.mu[n])
             for sp in species:
                 ost += '{:>10.2E}'.format(y_ini[n,species.index(sp)]/data_atm.n_0[n])
-                #ost += '{:>10.2E}'.format(vul['variable']['ymix'][n,species.index(sp)])
+                ost2 += '{:>10.2E}'.format(y_ini[n,species.index(sp)]*compo['mass'][compo_row.index(sp)] / (data_atm.n_0[n]*data_atm.mu[n]) )
             ost += '\n'
+            ost2 += '\n'
 
         ost = ost[:-1]
+        ost2 = ost2[:-1]
+        
+        output = open(vulcan_cfg.EQ_outfile, "w")
+        output2 = open(vulcan_cfg.mass_outfile, "w")
         output.write(ost)
         output.close()
+        output2.write(ost2)
+        output2.close()
         
         
     
@@ -229,7 +239,7 @@ class InitialAbun(object):
             # remove the fc output
             subprocess.call(["rm vulcan_EQ.dat"], shell=True, cwd='fastchem_vulcan/output/')
             # print EQ output for Spider
-            self.out_EQ(y_ini,data_atm)   
+            # self.out_EQ(y_ini,data_atm)   
             
         else:
             

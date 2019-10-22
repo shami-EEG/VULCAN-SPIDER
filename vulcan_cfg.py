@@ -16,6 +16,7 @@ atm_file = 'socrates_input/TP.dat'
 # Spider: this is the path to the elemental abundances (X/H ratios) made by Spider
 spider_file = 'spider_input/spider_elements.dat'
 EQ_outfile = 'output/vulcan_EQ.txt' # the equilibrium output 
+mass_outfile = 'output/vulcan_mass.txt' # the equilibrium output in "mass mixing ratio" 
 
 sflux_file = 'atm/stellar_flux/sflux-HD189_Moses11.txt' # This is the flux density at the stellar surface
 top_BC_flux_file = 'atm/BC_top.txt'

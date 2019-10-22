@@ -139,6 +139,9 @@ data_atm = make_atm.f_mu_dz(data_var, data_atm, output)
 # specify the BC
 make_atm.BC_flux(data_atm)
 
+# Print out the equilibrium abundances for SPIDER
+ini_abun.out_EQ(data_var.y_ini,data_atm)   
+
 # ============== Execute VULCAN  ==============
 # time-steping in the while loop until conv() returns True or count > count_max 
 
