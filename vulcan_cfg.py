@@ -3,7 +3,7 @@
 # ============================================================================= 
 
 # ====== Setting up the elements included in the network ======
-atom_list = ['H', 'O', 'C' , 'N', 'S' ]
+atom_list = ['H', 'O', 'C' , 'N', 'S','He' ]
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
 network = 'thermo/SNCHO_thermo_oxidising_network.txt' # NCHO_thermo_network.txt

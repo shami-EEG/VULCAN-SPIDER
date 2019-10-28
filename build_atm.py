@@ -532,6 +532,8 @@ class Atm(object):
         data_atm.dzi = dzi
         data_atm.zmco = zmco
         
+        data_atm.zco = np.insert(np.cumsum(dz),0, 0.) # cumulative sum of dz
+        
         if self.use_settling == True:
             # Using Gao 2018 (50)
             r_p = 1.e-4
