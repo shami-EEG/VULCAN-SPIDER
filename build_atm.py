@@ -121,31 +121,45 @@ class InitialAbun(object):
 
         ost = '{:<8s}'.format('(bar) ')  + '{:>9s}'.format('(K)') + '{:>9s}'.format('(cm)') + '{:>9s}'.format(' (mean molecular mass)')+'\n'
         ost += '{:<8s}'.format('Pressure')  + '{:>9s}'.format('Temp')+ '{:>9s}'.format('Height') + '{:>9s}'.format('mu')
-    
-        for sp in species: ost += '{:>10s}'.format(sp)       
-        ost +='\n'
+        
+        ost3 = '{:<8s}'.format('(bar) ')  + '{:>9s}'.format('(K)') + '{:>9s}'.format('(cm)') + '{:>9s}'.format(' (mean molecular mass)')+'{:>9s}'.format('  (g/cm^2)')+'\n'
+        ost3 += '{:<8s}'.format('Pressure')  + '{:>9s}'.format('Temp')+ '{:>9s}'.format('Height') + '{:>9s}'.format('mu') + '{:>9s}'.format(' col-mass')
+        
+        for sp in species: 
+            ost += '{:>10s}'.format(sp)       
+            ost3 += '{:>10s}'.format(sp)
+        ost +='\n'    
+        ost3 +='\n'
 
         ost2 = ost # string is immutible
         
         for n, p in enumerate(data_atm.pco):
             ost += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n]) + '{:>10.4f}'.format(data_atm.mu[n])
             ost2 += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n])+ '{:>10.4f}'.format(data_atm.mu[n])
+            ost3 += '{:<8.3E}'.format(p/1e6)  + '{:>8.1f}'.format(data_atm.Tco[n])  + '{:>10.2E}'.format(data_atm.zco[n])+ '{:>10.4f}'.format(data_atm.mu[n])
+            
             for sp in species:
                 ost += '{:>10.2E}'.format(y_ini[n,species.index(sp)]/data_atm.n_0[n])
                 ost2 += '{:>10.2E}'.format(y_ini[n,species.index(sp)]*compo['mass'][compo_row.index(sp)] / (data_atm.n_0[n]*data_atm.mu[n]) )
+                ost3 += '{:>10.2E}'.format(y_ini[n,species.index(sp)]*compo['mass'][compo_row.index(sp)]/Navo * data_atm.dz[n] )
+                
             ost += '\n'
             ost2 += '\n'
+            ost3 += '\n'
 
         ost = ost[:-1]
         ost2 = ost2[:-1]
+        ost3 = ost3[:-1]
         
         output = open(vulcan_cfg.EQ_outfile, "w")
         output2 = open(vulcan_cfg.mass_outfile, "w")
+        output3 = open(vulcan_cfg.col_mass_outfile, "w")
         output.write(ost)
         output.close()
         output2.write(ost2)
         output2.close()
-        
+        output3.write(ost3)
+        output3.close()
         
     
     
